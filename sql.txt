@@ -1,0 +1,83 @@
+-- --------------------------------------------------
+-- Script SQL para crear las tablas del sistema
+-- --------------------------------------------------
+
+-- 1. Tabla de usuarios
+CREATE TABLE `users` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(100) NOT NULL,
+  `apellido` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(150) NOT NULL UNIQUE,
+  `password` VARCHAR(255) NOT NULL,
+  `dni` VARCHAR(20) NOT NULL,
+  `curso` VARCHAR(50) NOT NULL,
+  `created_at` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP 
+                           ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- 2. Tabla de exámenes
+CREATE TABLE `exams` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `titulo` VARCHAR(200) NOT NULL,
+  `fecha_inicio` DATE    NOT NULL,
+  `fecha_fin`   DATE    NOT NULL,
+  `created_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
+                          ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- 3. Tabla de preguntas
+CREATE TABLE `questions` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `exam_id` INT UNSIGNED NOT NULL,
+  `enunciado` TEXT NOT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
+                          ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX (`exam_id`),
+  CONSTRAINT `fk_questions_exams`
+    FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`)
+      ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- 4. Tabla de respuestas
+CREATE TABLE `answers` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `question_id` INT UNSIGNED NOT NULL,
+  `contenido` TEXT NOT NULL,
+  `es_correcta` BOOLEAN NOT NULL DEFAULT FALSE,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
+                          ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX (`question_id`),
+  CONSTRAINT `fk_answers_questions`
+    FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`)
+      ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- 5. Tabla de puntuaciones
+CREATE TABLE `scores` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `exam_id` INT UNSIGNED NOT NULL,
+  `puntaje` TINYINT UNSIGNED NOT NULL,       -- 0 a 10
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX (`user_id`),
+  INDEX (`exam_id`),
+  CONSTRAINT `fk_scores_users`
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+      ON DELETE CASCADE,
+  CONSTRAINT `fk_scores_exams`
+    FOREIGN KEY (`exam_id`) REFERENCES `exams` (`id`)
+      ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

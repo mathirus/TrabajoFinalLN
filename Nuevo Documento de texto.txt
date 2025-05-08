@@ -1,0 +1,42 @@
+Table usuarios {
+  id INT [pk, increment]
+  nombre VARCHAR(100)
+  apellido VARCHAR(100)
+  email VARCHAR(150) [unique]
+  password VARCHAR(255)
+  created_at DATETIME
+  updated_at DATETIME
+}
+
+Table examenes {
+  id INT [pk, increment]
+  titulo VARCHAR(200)
+  fecha_publicacion DATE
+  created_at DATETIME
+  updated_at DATETIME
+}
+
+Table preguntas {
+  id INT [pk, increment]
+  examen_id INT [ref: > examenes.id]
+  enunciado TEXT
+  created_at DATETIME
+  updated_at DATETIME
+}
+
+Table respuestas {
+  id INT [pk, increment]
+  pregunta_id INT [ref: > preguntas.id]
+  contenido TEXT
+  es_correcta BOOLEAN
+  created_at DATETIME
+  updated_at DATETIME
+}
+
+Table puntuaciones {
+  id INT [pk, increment]
+  usuario_id INT [ref: > usuarios.id]
+  examen_id INT [ref: > examenes.id]
+  puntaje_total INT
+  created_at DATETIME
+}

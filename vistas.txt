@@ -1,0 +1,110 @@
+Vistas
+
+Login
+Pantalla de acceso donde el usuario ingresa su email y contraseña, y tiene un enlace para ir a “Crear usuario”.
+
+Registro de usuario
+Formulario con campos: nombre, apellido, DNI, email, curso y contraseña, y un botón para crear la cuenta.
+
+Dashboard / Bienvenida
+Mensaje de bienvenida al usuario, breve instrucción del juego, una casilla para aceptar términos y condiciones, y un botón para comenzar el examen (solo habilitado si marca la casilla).
+
+Examen
+Una página que muestra las 10 preguntas de opción múltiple (cada una con sus cuatro opciones) y un temporizador de 10 minutos. Al expirar el tiempo o al enviar, se calcula el puntaje.
+
+Resultado
+Muestra al participante cuántos puntos obtuvo (por ejemplo “Obtuviste 7/10”) y un botón para ver el ranking.
+
+Ranking global
+Tabla con la posición, nombre completo de cada usuario y su puntaje acumulado de los exámenes.
+----------------
+
+Rutas:
+
+
+Aquí tenés el listado de endpoints de la API y para qué sirve cada uno:
+
+POST /api/register
+Registra un nuevo usuario. Recibe nombre, apellido, email, contraseña, DNI y curso; crea la cuenta y devuelve éxito o errores de validación.
+
+POST /api/login
+Autentica al usuario con email y contraseña. Si son correctos, devuelve un token JWT que usarás en las siguientes peticiones.
+
+GET /api/exams
+Lista los exámenes. Filtra por fecha de inicio/fin para devolver solo el examen activo (el de la semana vigente).
+
+GET /api/exams/{id}/questions
+Obtiene 10 preguntas aleatorias del examen identificado por {id}, incluyendo cada una sus 4 opciones de respuesta (sin marcar cuál es correcta).
+
+POST /api/exams/{id}/submit
+Envía las respuestas del participante para el examen {id}. El servidor calcula cuántas están bien, guarda el puntaje y devuelve el resultado.
+
+GET /api/scores
+Devuelve el puntaje acumulado del usuario autenticado, es decir la suma de sus puntajes en los exámenes ya rendidos.
+
+GET /api/ranking
+Retorna el ranking global: lista de todos los usuarios con su puntaje total, ordenados de mayor a menor.
+
+Nota: todas las rutas que empiezan con /api/ excepto register y login requieren enviar el header Authorization: Bearer <token>.
+
+--------------------------------------------------
+
+Aquí va una descripción de cada pantalla, cómo interactúa el usuario y qué rutas API se usan tras bambalinas:
+
+Login
+
+Qué hace el usuario: Ingresa su email y contraseña y pulsa “Ingresar”.
+
+Qué ocurre internamente: se envía un POST a /api/login con email+password. Si son válidos, el servidor devuelve un token que se guarda en el navegador. Luego se redirige al Dashboard.
+
+Registro de usuario
+
+Qué hace el usuario: Completa nombre, apellido, DNI, curso, email y contraseña y pulsa “Crear cuenta”.
+
+Qué ocurre internamente: se envía un POST a /api/register con todos esos campos. Si la creación es exitosa, vuelve a la pantalla de Login para ingresar con sus nuevas credenciales.
+
+Dashboard / Bienvenida
+
+Qué hace el usuario: Ve un saludo, lee la instrucción, tilda “Acepto términos” y pulsa “Comenzar examen”.
+
+Qué ocurre internamente:
+
+Al cargar, se invoca GET /api/exams para obtener los exámenes y determinar si hay uno activo en las fechas actuales.
+
+Si encuentra uno activo, habilita el botón “Comenzar examen”.
+
+Al hacer clic, redirige a la pantalla de Examen pasando el ID del examen.
+
+Examen
+
+Qué hace el usuario: Responde las 10 preguntas de opción múltiple y —antes de que termine el timer de 10 min— pulsa “Enviar respuestas” (o el tiempo se agota automáticamente).
+
+Qué ocurre internamente:
+
+Al cargar, se llama GET /api/exams/{id}/questions para traer 10 preguntas aleatorias con sus 4 opciones cada una.
+
+Arranca un contador de 10 minutos.
+
+Al enviar (o al expirar), se hace un POST a /api/exams/{id}/submit con las respuestas seleccionadas. El servidor calcula el puntaje, lo guarda y devuelve el resultado.
+
+Resultado
+
+Qué hace el usuario: Ve en pantalla “Obtuviste X/10” y pulsa “Ver ranking”.
+
+Qué ocurre internamente:
+
+La página recibe el puntaje ya calculado (viene en la respuesta del submit).
+
+Al clicar “Ver ranking”, redirige a la pantalla de Ranking.
+
+Ranking global
+
+Qué hace el usuario: Observa la tabla de posiciones con nombre de cada participante y su puntaje total acumulado.
+
+Qué ocurre internamente:
+
+Al cargar, se invoca GET /api/ranking, que retorna la lista de todos los usuarios ordenada por puntaje descendente.
+
+Se renderiza esa lista en la tabla.
+
+Con esto se ve claramente la secuencia de pantallas, las acciones del usuario y las rutas API que cada una utiliza.
