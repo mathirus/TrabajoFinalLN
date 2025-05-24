@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #fceabb, hsl(170, 97%, 36%)); 
+            background:  hsl(170, 97%, 36%); 
             font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
@@ -40,7 +40,7 @@
         }
 
         .btn-primary:hover {
-            background-color: hsl(170, 97%, 30%);
+            background-color: hsl(170, 100%, 22%);
         }
 
         a {
@@ -53,42 +53,41 @@
         }
         
         .character-container {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    margin: 10px;
-    max-width: 20vw;
-    z-index: 10;
-    transition: transform 0.3s ease-in-out;
-}
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin: 10px;
+        max-width: 20vw;
+        z-index: 10;
+        transition: transform 0.3s ease-in-out;
+        }
 
-.character-img {
-    width: 100%;
-    height: auto;
-    cursor: pointer;
-}
+        .character-img {
+        width: 100%;
+        height: auto;
+        cursor: pointer;
+        }
 
-.dialog-bubble {
-    position: absolute;
-    bottom: 100%;
-    right: 0;
-    margin-bottom: 10px;
-    background-color: #fff;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    max-width: 250px;
-    font-size: 14px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease-in-out;
-}
+        .dialog-bubble {
+        position: absolute;
+        bottom: 100%;
+        right: 0;
+        margin-bottom: 10px;
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+        max-width: 250px;
+        font-size: 14px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease-in-out;
+        }
 
-
-.character-container:hover .dialog-bubble {
-    opacity: 1;
-}
+        .character-container:hover .dialog-bubble {
+        opacity: 1;
+        }
 
     </style>
 </head>
@@ -107,7 +106,7 @@
                     <label for="password" class="form-label">Contraseña</label>
                     <input id="password" type="password" class="form-control" required>
                 </div>
-                <button class="btn btn-primary w-100">Ingresar</button>
+                <a href="dashboard.html"><button class="btn btn-primary w-100">Ingresar</button></a>
             </form>
             <div class="text-center mt-3">
                 <a href="register.html">Crear usuario</a>
