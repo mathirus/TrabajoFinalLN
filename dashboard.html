@@ -8,15 +8,70 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: #fff;
+            background:  hsl(170, 97%, 36%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-
-
 
         .container {
             max-width: 600px;
-            margin-top: 60px;
+            margin: 80px auto;
+            background-color: white;
+            border-radius: 20px;
+            border: 3px solid hsl(199, 100%, 67%);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .container-title {
+            color: hwb(199 5% 68%);
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: hsl(170, 97%, 36%);
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: hsl(170, 100%, 22%);
+        }
+
+        .character-container {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 10px;
+            max-width: 20vw;
+            z-index: 10;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .character-img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .dialog-bubble {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 10px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            max-width: 250px;
+            font-size: 14px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .character-container:hover .dialog-bubble {
+            opacity: 1;
         }
     </style>
 </head>
@@ -26,13 +81,26 @@
 
     <div class="container text-center">
         <h2>¡Bienvenido, <!-- {{nombre}} -->!</h2>
-        <p class="lead">En este sistema tendrás 3 exámenes semanales de 10 preguntas. Tenés 10 minutos para cada uno.
+        <p class="lead">En este sistema tendrás tres exámenes semanales, cada uno compuesto por diez preguntas. 
+            Contás con un máximo de diez minutos para resolver cada examen. Las preguntas que no sean respondidas 
+            antes de que finalice el tiempo no sumarán ni restarán puntos. Además, como incentivo adicional, si respondés 
+            todas las preguntas y enviás el examen antes de que se agote el tiempo, el puntaje obtenido se multiplicará por 
+            la cantidad de minutos y segundos que te hayan sobrado.
         </p>
         <div class="form-check my-3">
             <input class="form-check-input" type="checkbox" id="acepto">
             <label class="form-check-label" for="acepto">Acepto términos y condiciones</label>
         </div>
-        <button class="btn btn-primary" disabled>Comenzar examen</button>
+        <a href="exam.html"><button class="btn btn-primary w-50">Comenzar examen</button></a>
+        
+    </div>
+
+    <div class="character-container">
+        <img src="img/Personaje.png" alt="Personaje" class="character-img">
+        <div class="dialog-bubble">
+            ¡Vamos a comenzar con todo!<br>
+            Recordá aceptar los términos para iniciar el examen.
+        </div>
     </div>
 </body>
 

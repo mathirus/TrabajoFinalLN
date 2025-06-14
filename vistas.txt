@@ -48,7 +48,7 @@ Retorna el ranking global: lista de todos los usuarios con su puntaje total, ord
 Nota: todas las rutas que empiezan con /api/ excepto register y login requieren enviar el header Authorization: Bearer <token>.
 
 --------------------------------------------------
-
+comentar
 Aquí va una descripción de cada pantalla, cómo interactúa el usuario y qué rutas API se usan tras bambalinas:
 
 Login
