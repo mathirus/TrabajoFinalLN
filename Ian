@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechQuest</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #4CA3A3, #A7D8D8);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #009688;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgsba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-top: 8px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #009688;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: #00796B;
+        }
+
+        footer {
+            background-color: #009688;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .question {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin: 12px 0;
+        }
+
+        .options button {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            background-color: #009688;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .options button:hover {
+            background-color: #00796B;
+        }
+
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        th {
+            background-color: #009688;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e0f7f7;
+        }
+
+        .ranking-header {
+            font-size: 26px;
+            font-weight: bold;
+            color: #009688;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #009688;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+
+    <!-- Página de Preguntas -->
+<div id="pagina4" class="container" style="display:none;">
+    <h2 class="section-title">Tanda de Preguntas</h2>
+    
+    <!-- Barra de progreso -->
+    <div class="progress-bar">
+        <div id="progress" class="progress" style="width: 0%"></div>
+    </div>
+    
+    <div id="question-container">
+        <!-- Las preguntas se insertan dinámicamente aquí -->
+    </div>
+
+    <button class="btn" id="next-button" onclick="nextQuestion()">Siguiente Pregunta</button>
+</div>
+
+<!-- Página de Puntaje -->
+<div id="pagina5" class="container" style="display:none;">
+    <h2>Puntaje Final</h2>
+    <div class="score">Puntaje: <span id="puntaje">0</span></div>
+    <button class="btn" onclick="verRanking()">Ver Ranking</button>
+</div>
+
+<!-- Página de Ranking -->
+<div id="pagina6" class="container" style="display:none;">
+    <h2 class="ranking-header">Ranking de Jugadores</h2>
+    <table>
+        <tr>
+            <th>Nombre</th>
+            <th>Puntaje</th>
+        </tr>
+        <!-- Ranking se insertará dinámicamente -->
+    </table>
+</div>
+
+
+
+<script>
+    let usuarios = [];
+    let puntaje = 0;
+    let currentQuestionIndex = 0;
+    let questions = [
+        // Tanda 1 de preguntas
+        [
+            { question: "¿Qué significa HTML?", options: ["HyperText Markup Language", "HyperText Machine Language", "HyperTool Markup Language", "None of the above"], correctAnswer: 0, score: 10 },
+            { question: "¿Qué hace una variable en programación?", options: ["Guarda datos", "Realiza cálculos", "Hace loops", "Ninguna de las anteriores"], correctAnswer: 0, score: 10 },
+            { question: "¿Qué significa CSS?", options: ["Cascading Style Sheets", "Computer Style Sheets", "Colorful Style Sheets", "Cascading Simple Sheets"], correctAnswer: 0, score: 10 },
+            { question: "¿Qué es JavaScript?", options: ["Un lenguaje de programación", "Una base de datos", "Un sistema operativo", "Un framework"], correctAnswer: 0, score: 10 },
+            { question: "¿Qué significa HTTP?", options: ["Hypertext Transfer Protocol", "HyperText Transport Protocol", "Home Tool Transfer Protocol", "None of the above"], correctAnswer: 0, score: 10 },
+            { question: "¿Qué es un servidor?", options: ["Un tipo de computadora", "Un software de red", "Ambas", "Ninguna de las anteriores"], correctAnswer: 2, score: 10 },
+            { question: "¿Qué es una base de datos?", options: ["Un conjunto de tablas", "Un lugar donde se almacenan datos", "Ambas", "Ninguna de las anteriores"], correctAnswer: 1, score: 10 },
+            { question: "¿Qué es un algoritmo?", options: ["Un conjunto de instrucciones", "Un tipo de archivo", "Un lenguaje de programación", "Ninguna de las anteriores"], correctAnswer: 0, score: 10 },
+            { question: "¿Qué es un API?", options: ["Interfaz de programación de aplicaciones", "Interfaz de red", "Lenguaje de programación", "Ninguna de las anteriores"], correctAnswer: 0, score: 10 },
+            { question: "¿Qué es un navegador web?", options: ["Un software para ver páginas web", "Un sistema operativo", "Un tipo de base de datos", "Ninguna de las anteriores"], correctAnswer: 0, score: 10 }
+        ],
+   
+    ];
+
+   
