@@ -49,6 +49,30 @@
             <button class="btn btn-success">Enviar respuestas</button>
         </form>
     </div>
+    <script>
+        async function fetchData(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log(data); // Maneja los datos recibidos
+            } catch (error) {
+                console.error('Error al realizar la solicitud GET:', error);
+            }
+        }
+        function submitAnswers() {
+            // Aquí puedes recoger las respuestas del formulario
+            const answers = {
+                q_1: document.querySelector('input[name="q_1"]:checked')?.id || null
+            };
+            console.log('Respuestas:', answers);
+            // Realiza la solicitud GET (reemplaza con tu URL)
+            fetchData('https://api.ejemplo.com/datos'); // Reemplaza con tu URL
+        }
+    </script>
+
 </body>
 
 </html>
