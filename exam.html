@@ -2,77 +2,157 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Examen</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .timer {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Examen</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .timer {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
 
-        .question {
-            margin-bottom: 2rem;
-        }
-    </style>
+    .question {
+      margin-bottom: 2rem;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4>Examen <!-- #{{exam_id}} --></h4>
-            <div class="timer text-danger">10:00</div>
-        </div>
-        <form>
-            <!-- Repetir por cada pregunta -->
-            <div class="question">
-                <p><strong>1. <!-- enunciado -->Pregunta de ejemplo?</strong></p>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="q_1" id="a1">
-                    <label class="form-check-label" for="a1">Opción A</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="q_1" id="b1">
-                    <label class="form-check-label" for="b1">Opción B</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="q_1" id="c1">
-                    <label class="form-check-label" for="c1">Opción C</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="q_1" id="d1">
-                    <label class="form-check-label" for="d1">Opción D</label>
-                </div>
-            </div>
-            <!-- … hasta 10 preguntas -->
-            <button class="btn btn-success">Enviar respuestas</button>
-        </form>
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4>Examen</h4>
+      <div id="timer" class="timer text-danger">01:00</div>
     </div>
-    <script>
-        async function fetchData(url) {
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                console.log(data); // Maneja los datos recibidos
-            } catch (error) {
-                console.error('Error al realizar la solicitud GET:', error);
-            }
-        }
-        function submitAnswers() {
-            // Aquí puedes recoger las respuestas del formulario
-            const answers = {
-                q_1: document.querySelector('input[name="q_1"]:checked')?.id || null
-            };
-            console.log('Respuestas:', answers);
-            // Realiza la solicitud GET (reemplaza con tu URL)
-            fetchData('https://api.ejemplo.com/datos'); // Reemplaza con tu URL
-        }
-    </script>
 
+    <form id="examForm">
+      <div id="questions-container"></div>
+      <button type="submit" class="btn btn-success">Enviar respuestas</button>
+    </form>
+  </div>
+
+  <script>
+    // 👇 Simulamos preguntas
+    const fakeResponse = {
+      "questions": [
+        {
+          "id": 3,
+          "enunciado": "que es nvidia",
+          "answers": [
+            { "id": 9, "contenido": "Una empresa" },
+            { "id": 10, "contenido": "Una parte de la pc" },
+            { "id": 11, "contenido": "Un sentimiento" },
+            { "id": 12, "contenido": "Ni idea" }
+          ]
+        },
+        {
+          "id": 1,
+          "enunciado": "que es la ram?",
+          "answers": [
+            { "id": 1, "contenido": "Una placa de video" },
+            { "id": 2, "contenido": "Una memoria" },
+            { "id": 3, "contenido": "Para el cd" },
+            { "id": 4, "contenido": "Una camioneta" }
+          ]
+        },
+        {
+          "id": 2,
+          "enunciado": "para que sirve el motherboard",
+          "answers": [
+            { "id": 5, "contenido": "Para lo jueguitos" },
+            { "id": 6, "contenido": "Para pensar" },
+            { "id": 7, "contenido": "Es la computadora madre" },
+            { "id": 8, "contenido": "Conectar componentes" }
+          ]
+        }
+      ]
+    };
+
+    // 📝 Render de preguntas (primera opción preseleccionada)
+    function loadQuestions(data) {
+      const container = document.getElementById("questions-container");
+
+      data.questions.forEach((q, index) => {
+        const div = document.createElement("div");
+        div.classList.add("question");
+
+        let html = `<p><strong>${index + 1}. ${q.enunciado}</strong></p>`;
+        q.answers.forEach((ans, i) => {
+          html += `
+            <div class="form-check">
+              <input class="form-check-input" type="radio" 
+                     name="q_${q.id}" 
+                     value="${ans.id}" 
+                     id="ans_${ans.id}" 
+                     ${i === 0 ? "checked" : ""}>
+              <label class="form-check-label" for="ans_${ans.id}">${ans.contenido}</label>
+            </div>
+          `;
+        });
+
+        div.innerHTML = html;
+        container.appendChild(div);
+      });
+    }
+
+    // ⏱ Temporizador
+    let timeLeft = 60; // segundos
+    const timerEl = document.getElementById("timer");
+    const countdown = setInterval(() => {
+      timeLeft--;
+      const min = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+      const sec = String(timeLeft % 60).padStart(2, "0");
+      timerEl.textContent = `${min}:${sec}`;
+
+      if (timeLeft <= 0) {
+        clearInterval(countdown);
+        submitAnswers(); // 🔥 envío automático
+      }
+    }, 1000);
+
+    // 🚀 Submit manual
+    document.getElementById("examForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      submitAnswers();
+    });
+
+    // 📤 Armado y envío
+    async function submitAnswers() {
+      const form = document.getElementById("examForm");
+      const formData = new FormData(form);
+      const answers = {};
+
+      for (let [key, value] of formData.entries()) {
+        const questionId = key.split("_")[1];
+        answers[questionId] = parseInt(value);
+      }
+
+      console.log("Respuestas a enviar:", { answers });
+
+      try {
+        const response = await fetch("https://tpfinal.store/api/exams/1/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // "Authorization": "Bearer " + localStorage.getItem("token"),
+            // "dni": localStorage.getItem("dni")
+          },
+          body: JSON.stringify({ answers })
+        });
+
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        const result = await response.json();
+        console.log("Respuesta del servidor:", result);
+        alert("Examen enviado ✅ (automático o manual)");
+      } catch (err) {
+        console.error("Error al enviar examen:", err);
+        alert("Error al enviar examen ❌");
+      }
+    }
+
+    // 🚀 Inicializamos
+    loadQuestions(fakeResponse);
+  </script>
 </body>
 
 </html>
