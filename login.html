@@ -91,77 +91,82 @@
 
 <body>
 
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h4 class="card-title text-center mb-4">Ingresar</h4>
-      <form id="loginForm">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input id="email" type="email" class="form-control" required>
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Contraseña</label>
-          <input id="password" type="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-      </form>
-      <div class="text-center mt-3">
-        <a href="register.html">Crear usuario</a>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h4 class="card-title text-center mb-4">Ingresar</h4>
+    <form id="loginForm">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" type="email" class="form-control" required>
       </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input id="password" type="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+    </form>
+    <div class="text-center mt-3">
+      <a href="register.html">Crear usuario</a>
     </div>
   </div>
+</div>
 
-  <div class="character-container">
-    <img src="img/Personaje.png" alt="Personaje" class="character-img">
-    <div class="dialog-bubble">
-      ¡Estoy muy contento de tenerte aquí!<br>
-      ¿Preparado para demostrar todos tus conocimientos?
-    </div>
+<div class="character-container">
+  <img src="img/Personaje.png" alt="Personaje" class="character-img">
+  <div class="dialog-bubble">
+    ¡Estoy muy contento de tenerte aquí!<br>
+    ¿Preparado para demostrar todos tus conocimientos?
   </div>
+</div>
 
-  <script>
-    const form = document.getElementById("loginForm");
+<script>
+  const form = document.getElementById("loginForm");
 
-    form.addEventListener("submit", async function (e) {
-      e.preventDefault();
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-      try {
-        const response = await fetch("https://tpfinal.store/api/register/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, password })
-        });
+    try {
+      const response = await fetch("https://tpfinal.store/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
 
-        if (!response.ok) {
-          alert("Error en login");
-          return;
-        }
+      const data = await response.json();
+      console.log("Respuesta del servidor:", data);
+      console.log("Status code:", response.status);
 
-        const data = await response.json();
+      if (!response.ok) {
+        alert(data.message || "Error en login");
+        return;
+      }
 
+      if (data.dni) {
+        localStorage.setItem("dni", data.dni);
+        
         if (data.token) {
           localStorage.setItem("token", data.token);
-
-          // Si la API devuelve también el dni, lo guardamos
-          if (data.dni) {
-            localStorage.setItem("dni", data.dni);
-          }
-
-          window.location.href = "dashboard.html";
-        } else {
-          alert("Credenciales inválidas");
         }
-      } catch (error) {
-        console.error("Error:", error);
-        alert("No se pudo conectar con el servidor");
+
+        console.log("DNI guardado:", data.dni);
+        console.log("Login exitoso");
+        window.location.href = "dashboard.html";
+      } else {
+        console.log("No se encontró DNI en la respuesta");
+        alert("Credenciales inválidas");
       }
-    });
-  </script>
+    } catch (error) {
+      console.error("Error:", error);
+      alert("No se pudo conectar con el servidor");
+    }
+  });
+</script>
 </body>
 
 </html>

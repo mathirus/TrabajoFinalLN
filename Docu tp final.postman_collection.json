@@ -1,0 +1,260 @@
+{
+	"info": {
+		"_postman_id": "e4e04c8d-481b-4066-9f87-6d589c3711a8",
+		"name": "Docu tp final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17933631",
+		"_collection_link": "https://grey-flare-43226.postman.co/workspace/BlackTooth-Team~5ece5a8b-2154-438f-8523-ee8eef88e109/collection/17933631-e4e04c8d-481b-4066-9f87-6d589c3711a8?action=share&source=collection_link&creator=17933631"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Ariel\",\n  \"apellido\": \"Pequeño\",\n  \"email\": \"ari@pque.com\",\n  \"password\": \"secret\",\n  \"dni\": \"232312312\",\n  \"curso\": \"Curso 1\"\n}"
+						},
+						"url": {
+							"raw": "tpfinal.store/api/register",
+							"host": [
+								"tpfinal",
+								"store"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"  var jsonData = pm.response.json();",
+									"  if (jsonData.token) {",
+									"    pm.environment.set(\"token\", jsonData.token);",
+									"  }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"juan@example.com\",\n  \"password\": \"secret\"\n}"
+						},
+						"url": {
+							"raw": "tpfinal.store/api/register/api/login",
+							"host": [
+								"tpfinal",
+								"store"
+							],
+							"path": [
+								"api",
+								"register",
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exams",
+			"item": [
+				{
+					"name": "Get Exams",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer ",
+								"disabled": true
+							},
+							{
+								"key": "dni",
+								"value": "12345678",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "tpfinal.store/api/register/api/exams",
+							"host": [
+								"tpfinal",
+								"store"
+							],
+							"path": [
+								"api",
+								"register",
+								"api",
+								"exams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Questions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"disabled": true
+							},
+							{
+								"key": "dni",
+								"value": "12345678",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "tpfinal.store/api/exams/1/questions",
+							"host": [
+								"tpfinal",
+								"store"
+							],
+							"path": [
+								"api",
+								"exams",
+								"1",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Exam",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "dni",
+								"value": "12345678",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"answers\": {\n    \"1\": 5,\n    \"2\": 7,\n    \"3\":9\n  }\n}"
+						},
+						"url": {
+							"raw": "tpfinal.store/api/exams/1/submit",
+							"host": [
+								"tpfinal",
+								"store"
+							],
+							"path": [
+								"api",
+								"exams",
+								"1",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Scores",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/scores",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"scores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Ranking",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"disabled": true
+							},
+							{
+								"key": "dni",
+								"value": "12345678",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "tpfinal.store/api/ranking",
+							"host": [
+								"tpfinal",
+								"store"
+							],
+							"path": [
+								"api",
+								"ranking"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:8000",
+			"type": "default"
+		}
+	]
+}

@@ -32,6 +32,17 @@
   </div>
 
   <script>
+    // Verificar autenticación al cargar
+    document.addEventListener('DOMContentLoaded', function() {
+      const dni = localStorage.getItem('dni');
+      
+      if (!dni) {
+        alert('Debes iniciar sesión para acceder al examen');
+        window.location.href = 'login.html';
+        return;
+      }
+    });
+
     // 👇 Simulamos preguntas
     const fakeResponse = {
       "questions": [
@@ -134,8 +145,8 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            // "Authorization": "Bearer " + localStorage.getItem("token"),
-            // "dni": localStorage.getItem("dni")
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+            "dni": localStorage.getItem("dni")
           },
           body: JSON.stringify({ answers })
         });
@@ -150,8 +161,32 @@
       }
     }
 
-    // 🚀 Inicializamos
-    loadQuestions(fakeResponse);
+    // 🚀 Inicializamos - Cargamos preguntas del servidor
+    async function loadExamQuestions() {
+      try {
+        const response = await fetch("https://tpfinal.store/api/exams/1/questions", {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+            "dni": localStorage.getItem("dni")
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        loadQuestions(data);
+      } catch (err) {
+        console.error("Error al cargar preguntas:", err);
+        console.log("Usando preguntas de prueba...");
+        loadQuestions(fakeResponse);
+      }
+    }
+
+    loadExamQuestions();
   </script>
 </body>
 
