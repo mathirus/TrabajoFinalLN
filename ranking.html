@@ -32,6 +32,17 @@
   </div>
 
   <script>
+    // Verificar autenticación al cargar
+    document.addEventListener('DOMContentLoaded', function() {
+      const dni = localStorage.getItem('dni');
+      
+      if (!dni) {
+        alert('Debes iniciar sesión para ver el ranking');
+        window.location.href = 'login.html';
+        return;
+      }
+    });
+
     // 👇 Simulamos la respuesta de la API
     const fakeRanking = {
       "ranking": [
@@ -60,8 +71,32 @@
       });
     }
 
-    // 🚀 Inicializamos con el fake
-    loadRanking(fakeRanking);
+    // 🚀 Cargar ranking desde API
+    async function loadRankingData() {
+      try {
+        const dni = localStorage.getItem("dni");
+        const response = await fetch("http://localhost:3000/api/ranking", {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "dni": dni
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        loadRanking(data);
+      } catch (err) {
+        console.error("Error al cargar ranking:", err);
+        console.log("Usando ranking de prueba...");
+        loadRanking(fakeRanking);
+      }
+    }
+
+    loadRankingData();
   </script>
 </body>
 

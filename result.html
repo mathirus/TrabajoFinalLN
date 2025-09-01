@@ -10,9 +10,79 @@
 
 <body>
     <div class="container text-center mt-5">
-        <h2>Obtuviste <!-- {{puntaje}} --> / 10</h2>
-        <a href="ranking.html" class="btn btn-primary mt-4">Ver ranking</a>
+        <h2 id="score-display">Cargando resultado...</h2>
+        <div id="details" class="mt-3"></div>
+        <div class="mt-4">
+            <a href="ranking.html" class="btn btn-primary me-2">Ver ranking</a>
+            <a href="dashboard.html" class="btn btn-secondary">Volver al dashboard</a>
+        </div>
     </div>
+
+    <script>
+        // Verificar autenticación al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            const dni = localStorage.getItem('dni');
+            
+            if (!dni) {
+                alert('Debes iniciar sesión para ver los resultados');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            loadExamResult();
+        });
+
+        function loadExamResult() {
+            const examResult = localStorage.getItem('examResult');
+            
+            if (examResult) {
+                try {
+                    const result = JSON.parse(examResult);
+                    displayResult(result);
+                } catch (err) {
+                    console.error("Error al parsear resultado:", err);
+                    displayDefaultResult();
+                }
+            } else {
+                displayDefaultResult();
+            }
+        }
+
+        function displayResult(result) {
+            const scoreDisplay = document.getElementById('score-display');
+            const detailsDiv = document.getElementById('details');
+            
+            // Mostrar puntaje principal
+            if (result.score !== undefined) {
+                scoreDisplay.textContent = `Obtuviste ${result.score} / 10`;
+            } else if (result.puntaje !== undefined) {
+                scoreDisplay.textContent = `Obtuviste ${result.puntaje} / 10`;
+            } else {
+                scoreDisplay.textContent = "Examen enviado correctamente";
+            }
+            
+            // Mostrar detalles adicionales si están disponibles
+            if (result.tiempo_usado) {
+                detailsDiv.innerHTML += `<p class="text-muted">Tiempo utilizado: ${result.tiempo_usado}</p>`;
+            }
+            
+            if (result.bonus_tiempo) {
+                detailsDiv.innerHTML += `<p class="text-success">Bonus por tiempo: +${result.bonus_tiempo}</p>`;
+            }
+            
+            if (result.message) {
+                detailsDiv.innerHTML += `<p class="alert alert-info">${result.message}</p>`;
+            }
+        }
+
+        function displayDefaultResult() {
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.textContent = "Examen enviado correctamente";
+            
+            const detailsDiv = document.getElementById('details');
+            detailsDiv.innerHTML = '<p class="text-muted">Los resultados se procesarán pronto</p>';
+        }
+    </script>
 </body>
 
 </html>
