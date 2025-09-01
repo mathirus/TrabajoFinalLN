@@ -75,7 +75,7 @@
     async function loadRankingData() {
       try {
         const dni = localStorage.getItem("dni");
-        const response = await fetch("http://localhost:3000/api/ranking", {
+        const response = await fetch("https://tpfinal.store/api/ranking", {
           method: "GET",
           headers: {
             "Accept": "application/json",
