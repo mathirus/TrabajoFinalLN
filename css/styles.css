@@ -1,0 +1,345 @@
+/* Estilos Globales - Olimpiada Tecnología Las Nieves */
+
+/* Variables de colores */
+:root {
+    --primary-color: hsl(170, 97%, 36%);
+    --primary-hover: hsl(170, 100%, 22%);
+    --secondary-color: hsl(199, 100%, 67%);
+    --title-color: hwb(199 5% 68%);
+    --background-gradient: linear-gradient(135deg, hsl(170, 97%, 36%) 0%, hsl(199, 100%, 67%) 100%);
+    --white: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.2);
+    --light-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos base del body */
+body {
+    background: var(--background-gradient);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Contenedor principal mejorado */
+.main-container {
+    max-width: 600px;
+    width: 100%;
+    background-color: var(--white);
+    border-radius: 20px;
+    border: 3px solid var(--secondary-color);
+    box-shadow: 0 8px 20px var(--shadow);
+    padding: 40px 30px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* Contenedor amplio para tablas y listados */
+.wide-container {
+    max-width: 900px;
+    width: 100%;
+    background-color: var(--white);
+    border-radius: 20px;
+    border: 3px solid var(--secondary-color);
+    box-shadow: 0 8px 20px var(--shadow);
+    padding: 40px 30px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* Títulos */
+h1, h2, h3 {
+    color: var(--title-color);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 2rem;
+    text-align: center;
+}
+
+/* Botones personalizados */
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    padding: 12px 30px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--light-shadow);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    padding: 12px 30px;
+    transition: all 0.3s ease;
+    color: var(--white);
+}
+
+.btn-secondary:hover {
+    background-color: hsl(199, 100%, 55%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--light-shadow);
+}
+
+/* Formularios mejorados */
+.form-control, .form-select {
+    border-radius: 15px;
+    border: 2px solid #e0e0e0;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(92, 193, 255, 0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* Cards mejoradas */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--light-shadow);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow);
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 15px 15px 0 0 !important;
+    font-weight: bold;
+    padding: 15px 20px;
+}
+
+/* Alertas personalizadas */
+.alert {
+    border-radius: 15px;
+    border: none;
+    padding: 15px 20px;
+}
+
+.alert-info {
+    background-color: rgba(92, 193, 255, 0.1);
+    color: var(--title-color);
+    border-left: 4px solid var(--secondary-color);
+}
+
+.alert-success {
+    background-color: rgba(3, 188, 132, 0.1);
+    color: var(--primary-color);
+    border-left: 4px solid var(--primary-color);
+}
+
+.alert-danger {
+    background-color: rgba(255, 92, 92, 0.1);
+    color: #dc3545;
+    border-left: 4px solid #dc3545;
+}
+
+/* Tablas mejoradas */
+.table {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.table thead th {
+    border: none;
+    padding: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(92, 193, 255, 0.05);
+}
+
+/* Personaje animado */
+.character-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 10px;
+    max-width: 20vw;
+    z-index: 10;
+    transition: transform 0.3s ease-in-out;
+}
+
+.character-img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    animation: float 3s ease-in-out infinite;
+}
+
+.dialog-bubble {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 10px;
+    background-color: var(--white);
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 250px;
+    font-size: 14px;
+    box-shadow: 0 0 10px var(--light-shadow);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.character-container:hover .dialog-bubble {
+    opacity: 1;
+}
+
+/* Spinner de carga */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3em;
+}
+
+/* Badges mejorados */
+.badge {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Progress bars */
+.progress {
+    height: 25px;
+    border-radius: 15px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    border-radius: 15px;
+    background-color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-container, .wide-container {
+        padding: 30px 20px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .character-container {
+        max-width: 30vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-container, .wide-container {
+        padding: 20px 15px;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .character-container {
+        max-width: 40vw;
+    }
+}
+
+/* Utilidades adicionales */
+.text-primary-custom {
+    color: var(--primary-color) !important;
+}
+
+.text-secondary-custom {
+    color: var(--secondary-color) !important;
+}
+
+.bg-primary-custom {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-secondary-custom {
+    background-color: var(--secondary-color) !important;
+}
+
+.shadow-custom {
+    box-shadow: 0 4px 10px var(--light-shadow) !important;
+}
+
+.rounded-custom {
+    border-radius: 15px !important;
+}

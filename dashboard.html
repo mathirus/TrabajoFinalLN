@@ -4,74 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard</title>
+    <title>Olimpiada Tecnología Las Nieves</title>
+    <link rel="icon" type="image/png" href="img/descarga (11).png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         body {
-            background:  hsl(170, 97%, 36%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-
-        .container {
-            max-width: 600px;
-            margin: 80px auto;
-            background-color: white;
-            border-radius: 20px;
-            border: 3px solid hsl(199, 100%, 67%);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        
+        .terms-check {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
         }
-
-        .container-title {
-            color: hwb(199 5% 68%);
-            font-weight: bold;
+        
+        .form-check {
+            margin: 0;
         }
-
-        .btn-primary {
-            background-color: hsl(170, 97%, 36%);
-            border: none;
-            border-radius: 30px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+        
+        .exam-info {
+            background: linear-gradient(135deg, rgba(92, 193, 255, 0.1) 0%, rgba(3, 188, 132, 0.1) 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
         }
-        .btn-primary:hover {
-            background-color: hsl(170, 100%, 22%);
-        }
-
-        .character-container {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            margin: 10px;
-            max-width: 20vw;
-            z-index: 10;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .character-img {
-            width: 100%;
-            height: auto;
-            cursor: pointer;
-        }
-
-        .dialog-bubble {
-            position: absolute;
-            bottom: 100%;
-            right: 0;
-            margin-bottom: 10px;
-            background-color: #fff;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            padding: 10px;
-            max-width: 250px;
-            font-size: 14px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        .character-container:hover .dialog-bubble {
-            opacity: 1;
+        
+        .exam-info p {
+            text-align: justify;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -79,22 +45,34 @@
 <body>
     <!-- hola aca mathi-->
 
-    <div class="container text-center">
-        <h2>¡Bienvenido!</h2>
+    <div class="main-container text-center">
+        <h1 class="mb-4">¡Bienvenido!</h1>
         
         <!-- Contenedor para examen disponible -->
         <div id="examAvailable" style="display: none;">
-            <p class="lead">En este sistema tendrás tres exámenes semanales, cada uno compuesto por diez preguntas. 
-                Contás con un máximo de diez minutos para resolver cada examen. Las preguntas que no sean respondidas 
-                antes de que finalice el tiempo no sumarán ni restarán puntos. Además, como incentivo adicional, si respondés 
-                todas las preguntas y enviás el examen antes de que se agote el tiempo, el puntaje obtenido se multiplicará por 
-                la cantidad de minutos y segundos que te hayan sobrado.
-            </p>
-            <div class="form-check my-3">
-                <input class="form-check-input" type="checkbox" id="acepto">
+            <div class="exam-info">
+                <p class="lead">En este sistema tendrás tres exámenes semanales, cada uno compuesto por diez preguntas. 
+                    Contás con un máximo de tres minutos para resolver cada examen. Las preguntas que no sean respondidas 
+                    antes de que finalice el tiempo no sumarán ni restarán puntos.
+                </p>
+            </div>
+            <div class="alert alert-success mt-3" style="border-radius: 15px; border-left: 4px solid var(--primary-color);">
+                <h5 class="alert-heading">🏆 ¡Bonus por Velocidad!</h5>
+                <p class="mb-0"><strong>¡Importante!</strong> Tu puntaje final se multiplica por el tiempo que te sobre. 
+                Mientras más rápido termines, más puntos obtendrás. Por ejemplo:</p>
+                <ul class="mt-2 mb-0 text-start">
+                    <li>Si obtienes 8 puntos y te sobran 2 minutos: <strong>8 × 120 segundos = 960 puntos</strong></li>
+                    <li>Si obtienes 8 puntos y te sobran 30 segundos: <strong>8 × 30 segundos = 240 puntos</strong></li>
+                </ul>
+                <p class="mt-2 mb-0">🚀 ¡Responde rápido y correctamente para maximizar tu puntaje!</p>
+            </div>
+            <div class="terms-check">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="acepto">
+                </div>
                 <label class="form-check-label" for="acepto">Acepto términos y condiciones</label>
             </div>
-            <button id="startExam" class="btn btn-primary w-50">Comenzar examen</button>
+            <button id="startExam" class="btn btn-primary btn-lg px-5 mt-3">Comenzar Examen</button>
         </div>
         
         <!-- Contenedor para cuando no hay examen -->
@@ -105,7 +83,7 @@
                 <hr>
                 <p class="mb-0">Puedes ver el ranking de los mejores puntajes mientras esperas.</p>
             </div>
-            <button onclick="window.location.href='ranking.html'" class="btn btn-primary w-50 mt-3">Ver Ranking</button>
+            <button onclick="window.location.href='ranking.html'" class="btn btn-primary btn-lg px-5 mt-3">Ver Ranking</button>
         </div>
         
         <!-- Mensaje de carga -->
@@ -120,8 +98,9 @@
     <div class="character-container">
         <img src="img/Personaje.png" alt="Personaje" class="character-img">
         <div class="dialog-bubble">
-            ¡Vamos a comenzar con todo!<br>
-            Recordá aceptar los términos para iniciar el examen.
+            ¡Tip importante!<br>
+            Mientras más rápido termines el examen,<br>
+            ¡más puntos obtendrás!
         </div>
     </div>
 

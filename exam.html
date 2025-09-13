@@ -4,31 +4,203 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Examen</title>
+  <title>Olimpiada Tecnología Las Nieves</title>
+  <link rel="icon" type="image/png" href="img/descarga (11).png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
   <style>
-    .timer {
-      font-size: 1.5rem;
-      font-weight: bold;
+    /* Cronómetro futurista tipo bomba */
+    .timer-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: linear-gradient(135deg, hsl(170, 97%, 36%) 0%, hsl(199, 100%, 67%) 100%);
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 30px rgba(92, 193, 255, 0.5),
+                  0 0 60px rgba(3, 188, 132, 0.3),
+                  inset 0 0 20px rgba(0, 0, 0, 0.2);
+      border: 3px solid hsl(199, 100%, 67%);
+      animation: pulse 2s infinite;
+      transition: all 0.3s ease;
     }
+    
+    .timer-container.warning {
+      animation: pulse 1s infinite, shake 0.5s infinite;
+      box-shadow: 0 0 40px rgba(255, 193, 7, 0.8),
+                  0 0 80px rgba(255, 193, 7, 0.5),
+                  inset 0 0 30px rgba(255, 193, 7, 0.3);
+      border-color: #ffc107;
+    }
+    
+    .timer-container.critical {
+      animation: pulse 0.5s infinite, shake 0.3s infinite;
+      box-shadow: 0 0 50px rgba(255, 152, 0, 1),
+                  0 0 100px rgba(255, 152, 0, 0.7),
+                  inset 0 0 40px rgba(255, 152, 0, 0.5);
+      border-color: #ff9800;
+      transform: scale(1.1);
+    }
+    
+    .timer-label {
+      color: #ffffff;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+    
+    .timer {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+                   0 0 20px rgba(255, 255, 255, 0.5);
+      font-family: 'Courier New', monospace;
+      min-width: 80px;
+      text-align: center;
+    }
+    
+    .timer.warning {
+      color: #ffc107;
+      text-shadow: 0 0 10px rgba(255, 193, 7, 0.8),
+                   0 0 20px rgba(255, 193, 7, 0.5);
+    }
+    
+    .timer.critical {
+      color: #ff9800;
+      text-shadow: 0 0 10px rgba(255, 152, 0, 0.8),
+                   0 0 20px rgba(255, 152, 0, 0.5);
+      animation: blink 0.5s infinite;
+    }
+    
+    /* Barra de progreso circular */
+    .timer-progress {
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: 126px;
+      height: 126px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        #ffffff 0deg,
+        #ffffff var(--progress),
+        transparent var(--progress)
+      );
+      mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+    }
+    
+    .timer-progress.warning {
+      background: conic-gradient(
+        from 0deg,
+        #ffc107 0deg,
+        #ffc107 var(--progress),
+        transparent var(--progress)
+      );
+    }
+    
+    .timer-progress.critical {
+      background: conic-gradient(
+        from 0deg,
+        #ff9800 0deg,
+        #ff9800 var(--progress),
+        transparent var(--progress)
+      );
+    }
+    
+    /* Animaciones */
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 30px rgba(92, 193, 255, 0.5),
+                    0 0 60px rgba(3, 188, 132, 0.3),
+                    inset 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+      50% {
+        box-shadow: 0 0 40px rgba(92, 193, 255, 0.7),
+                    0 0 80px rgba(3, 188, 132, 0.5),
+                    inset 0 0 30px rgba(0, 0, 0, 0.3);
+      }
+      100% {
+        box-shadow: 0 0 30px rgba(92, 193, 255, 0.5),
+                    0 0 60px rgba(3, 188, 132, 0.3),
+                    inset 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      75% { transform: translateX(2px); }
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
 
     .question {
       margin-bottom: 2rem;
+    }
+    
+    /* Ajuste para que el contenido no quede detrás del timer */
+    .wide-container {
+      padding-top: 20px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .timer-container {
+        width: 100px;
+        height: 100px;
+        top: 10px;
+        right: 10px;
+      }
+      
+      .timer {
+        font-size: 1.5rem;
+      }
+      
+      .timer-progress {
+        width: 106px;
+        height: 106px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h4>Examen</h4>
-      <div id="timer" class="timer text-danger">01:00</div>
+  <div class="wide-container">
+    <h2 class="mb-4">Examen</h2>
+    
+    <!-- Cronómetro Futurista Flotante -->
+    <div class="timer-container" id="timerContainer">
+      <div class="timer-progress" id="timerProgress"></div>
+      <div class="timer-label">TIEMPO</div>
+      <div id="timer" class="timer">03:00</div>
     </div>
 
     <form id="examForm">
       <div id="questions-container"></div>
-      <button type="submit" class="btn btn-success">Enviar respuestas</button>
+      <button type="submit" class="btn btn-primary">Enviar respuestas</button>
     </form>
+  </div>
+
+  <div class="character-container">
+    <img src="img/Personaje.png" alt="Personaje" class="character-img">
+    <div class="dialog-bubble">
+      ¡Recordá! Mientras más rápido termines,<br>
+      más puntos obtendrás por el multiplicador de tiempo.
+    </div>
   </div>
 
   <script>
@@ -106,18 +278,45 @@
       });
     }
 
-    // ⏱ Temporizador
-    let timeLeft = 60; // segundos
+    // ⏱ Temporizador Futurista
+    const totalTime = 180; // 3 minutos en segundos
+    let timeLeft = totalTime;
+    let isTimeUp = false;
     const timerEl = document.getElementById("timer");
+    const timerContainer = document.getElementById("timerContainer");
+    const timerProgress = document.getElementById("timerProgress");
+    
     const countdown = setInterval(() => {
       timeLeft--;
       const min = String(Math.floor(timeLeft / 60)).padStart(2, "0");
       const sec = String(timeLeft % 60).padStart(2, "0");
       timerEl.textContent = `${min}:${sec}`;
+      
+      // Actualizar barra de progreso circular
+      const progress = (timeLeft / totalTime) * 360;
+      timerProgress.style.setProperty('--progress', `${progress}deg`);
+      
+      // Cambiar colores según el tiempo restante
+      if (timeLeft <= 30) {
+        // Últimos 30 segundos - CRÍTICO
+        timerEl.classList.remove('warning');
+        timerEl.classList.add('critical');
+        timerContainer.classList.remove('warning');
+        timerContainer.classList.add('critical');
+        timerProgress.classList.remove('warning');
+        timerProgress.classList.add('critical');
+      } else if (timeLeft <= 60) {
+        // Último minuto - ADVERTENCIA
+        timerEl.classList.add('warning');
+        timerContainer.classList.add('warning');
+        timerProgress.classList.add('warning');
+      }
 
       if (timeLeft <= 0) {
         clearInterval(countdown);
-        submitAnswers(); // 🔥 envío automático
+        isTimeUp = true;
+        timerEl.textContent = "00:00";
+        submitAnswers(); // 🔥 envío automático sin alerta
       }
     }, 1000);
 
@@ -129,6 +328,9 @@
 
     // 📤 Armado y envío
     async function submitAnswers() {
+      // Detener el cronometro inmediatamente
+      clearInterval(countdown);
+      
       const form = document.getElementById("examForm");
       const formData = new FormData(form);
       const answers = {};
@@ -137,8 +339,11 @@
         const questionId = key.split("_")[1];
         answers[questionId] = parseInt(value);
       }
+      
+      // Calcular tiempo restante en segundos
+      const timeRemaining = Math.max(0, timeLeft);
 
-      console.log("Respuestas a enviar:", { answers });
+      console.log("Respuestas a enviar:", { answers, time_remaining: timeRemaining });
 
       try {
         const dni = localStorage.getItem("dni");
@@ -150,7 +355,10 @@
             "Accept": "application/json",
             "dni": dni
           },
-          body: JSON.stringify({ answers })
+          body: JSON.stringify({ 
+            answers: answers,
+            time_remaining: timeRemaining 
+          })
         });
 
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
@@ -162,7 +370,12 @@
         window.location.href = "result.html";
       } catch (err) {
         console.error("Error al enviar examen:", err);
-        alert("Error al enviar examen ❌");
+        // Si se acabó el tiempo, redirigir sin mostrar alerta
+        if (isTimeUp) {
+          window.location.href = "result.html";
+        } else {
+          alert("Error al enviar examen ❌");
+        }
       }
     }
 
